@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,13 +18,26 @@ builder.Services.AddAuthentication(options =>
     .AddCookie()
     .AddOpenIdConnect(options =>
     {
-        options.Authority = "https://demo.duendesoftware.com/";
-        options.ClientId = "interactive.public";
+        options.Authority = "http://localhost:8080/realms/test/";
+        options.ClientId = "securewebapplication";
+        options.RequireHttpsMetadata = false;
         options.ResponseType = OpenIdConnectResponseType.Code;
         options.SaveTokens = true;
         options.MapInboundClaims = false;
         options.Scope.Add(OpenIdConnectScope.OpenIdProfile);
         options.Scope.Add(OpenIdConnectScope.Email);
+        options.Scope.Add("roles");
+
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            RoleClaimType = "role"
+        };
+
+        options.Events.OnTokenValidated = context =>
+        {
+            Console.WriteLine(context.SecurityToken.RawData);
+            return Task.CompletedTask;
+        };
     });
 
 builder.Services.AddAuthorization(options =>

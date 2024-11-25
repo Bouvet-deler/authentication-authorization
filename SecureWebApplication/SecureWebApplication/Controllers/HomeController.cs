@@ -13,7 +13,7 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Administrator")]
     public IActionResult Secure()
     {
         return View();
