@@ -13,7 +13,7 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
-    [Authorize(Policy = "IsAdminPolicy")]
+    [Authorize]
     public IActionResult Secure()
     {
         return View();
