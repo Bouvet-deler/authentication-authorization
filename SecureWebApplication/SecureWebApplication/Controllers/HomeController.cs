@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SecureWebApplication.Models;
 using System.Diagnostics;
@@ -12,6 +13,7 @@ public class HomeController : Controller
         return View(viewModel);
     }
 
+    [Authorize]
     public IActionResult Secure()
     {
         return View();
