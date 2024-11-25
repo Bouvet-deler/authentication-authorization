@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    @if (Model.IsAuthenticated)
+    {
+        <h1>Welcome @Model.UserName</h1>
+        <h3>User Claims:</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th text-align="left">Type</th>
+                    <th text-align="left">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model.Claims)
+                {
+                    <tr>
+                        <td align="left">@claim.Type</td>
+                        <td align="left">@claim.Value</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h1>Welcome guest</h1>
+    }
+</div>
