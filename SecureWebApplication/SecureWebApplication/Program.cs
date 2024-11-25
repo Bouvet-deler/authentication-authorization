@@ -15,6 +15,12 @@ builder.Services.AddAuthentication()
 
 builder.Services.AddAuthorization(options =>
 {
+    options.AddPolicy("IsAdminPolicy", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole("Administrator");
+        policy.RequireAssertion(context => context.User.Identity?.Name == "user1");
+    });
     options.FallbackPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
 });
 
